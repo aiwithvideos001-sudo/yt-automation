@@ -19,7 +19,7 @@ topic = random.choice(topics)
 tts = gTTS(text=topic, lang='hi')
 tts.save("voice.mp3")
 
-hits = requests.get(f"https://pixabay.com/api/?key={os.environ['PIXABAY_KEY']}&q=motivation&image_type=photo&per_page=3").json()['hits']
+hits = requests.get(f"https://pixabay.com/api/?key={os.environ['PIXABAY_API_KEY']}&q=motivation&image_type=photo&per_page=3").json()['hits']
 with open("bg.jpg","wb") as f:
     f.write(requests.get(hits[0]['largeImageURL']).content)
 
