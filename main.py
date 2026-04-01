@@ -1,11 +1,11 @@
-import os, json, requests
+import os, json, requests, urllib.request
 from gtts import gTTS
 from moviepy.editor import ImageClip, AudioFileClip
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+import random
 
-# Topic generate karo - fixed motivational facts
 topics = [
     "मेहनत कभी बेकार नहीं जाती, सफलता जरूर मिलती है।",
     "हर मुश्किल के बाद एक नई शुरुआत होती है।",
@@ -13,15 +13,12 @@ topics = [
     "आज की मेहनत कल की सफलता बनती है।",
     "हार मत मानो, जीत तुम्हारी है।"
 ]
-import random
 topic = random.choice(topics)
 
 tts = gTTS(text=topic, lang='hi')
 tts.save("voice.mp3")
 
-hits = requests.get(f"https://pixabay.com/api/?key={os.environ['PIXABAY_API_KEY']}&q=motivation&image_type=photo&per_page=3").json()['hits']
-with open("bg.jpg","wb") as f:
-    f.write(requests.get(hits[0]['largeImageURL']).content)
+urllib.request.urlretrieve("https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1280", "bg.jpg")
 
 audio = AudioFileClip("voice.mp3")
 ImageClip("bg.jpg").set_duration(audio.duration).set_audio(audio).write_videofile("video.mp4",fps=24)
