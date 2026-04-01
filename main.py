@@ -1,13 +1,20 @@
 import os, json, requests
 from gtts import gTTS
-from google import genai
 from moviepy.editor import ImageClip, AudioFileClip
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-client = genai.Client(api_key=os.environ['GEMINI_API_KEY'])
-topic = client.models.generate_content(model='gemini-2.0-flash',contents='Give me one motivational fact in Hindi. Only the fact.').text
+# Topic generate karo - fixed motivational facts
+topics = [
+    "मेहनत कभी बेकार नहीं जाती, सफलता जरूर मिलती है।",
+    "हर मुश्किल के बाद एक नई शुरुआत होती है।",
+    "जो सपने देखते हैं वो ही सपने पूरे करते हैं।",
+    "आज की मेहनत कल की सफलता बनती है।",
+    "हार मत मानो, जीत तुम्हारी है।"
+]
+import random
+topic = random.choice(topics)
 
 tts = gTTS(text=topic, lang='hi')
 tts.save("voice.mp3")
